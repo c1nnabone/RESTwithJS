@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="1" cellspacing="3" cellpadding="3">
+    <tbody>
+    <tr>
+        <td>Id</td>
+        <td>Username</td>
+        <td>Password</td>
+        <td>Roles</td>
+        <td>Edit</td>
+        <td>Delete</td>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td><p th:text="${user.getId()}">user</p></td>
+        <td><p th:text="${user.getUsername()}">user</p></td>
+        <td><p th:text="${user.getPassword()}">user</p></td>
+        <td><p th:text="${user.getRoles()}">user</p></td>
+        <td>
+            <button><a th:href="@{/admin/edit(id=${user.getId()})}">Edit</a></button>
+        </td>
+        <td>
+            <form th:method="DELETE" th:action="@{/admin/delete(id=${user.getId()})}">
+                <input type="submit" value="Delete"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<td>
+    <button><a th:href="@{/admin/new}">Add New</a></button>
+</td>
+<button><a th:href="@{/logout}">Logout</a></button>
+</body>
+</html>

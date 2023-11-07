@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Add User</h1>
+<form th:method="POST" th:action="@{/admin}" th:object="${user}">
+    <label for="name">Enter username:</label>
+    <input type="text" th:field="*{username}" id="name">
+    <br>
+    <label for="lastname">Enter password:</label>
+    <input type="text" th:field="*{password}" id="lastname">
+    <br>
+    <input type="submit" value="Create!">
+    <p>
+        <label>Roles:
+            <input type="checkbox" name="roles"
+                   th:each="role : ${allRoles}"
+                   th:text="${role.name}"
+                   th:value="${role.id}"
+                   th:field="*{roles}"
+            />
+        </label>
+    </p>
+</form>
+<button><a th:href="@{/logout}">Logout</a></button>
+</body>
+</html>
