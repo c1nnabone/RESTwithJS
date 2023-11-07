@@ -8,11 +8,11 @@
 <h1>Edit User</h1>
 <form th:method="PATCH" th:action="@{/admin/edit}" th:object="${usertoupdate}">
     <input type="hidden" th:field="*{id}" th:value="*{id}"/>
-    <label for="name">Username:</label>
-    <input type="text" th:field="*{username}" id="name">
+    <label for="username">Username:</label>
+    <input type="text" th:field="*{username}" id="username">
     <br>
-    <label for="lastname">Password:</label>
-    <input type="text" th:field="*{password}" id="lastname">
+    <label for="password">Password:</label>
+    <input type="text" th:field="*{password}" id="password">
     <p>
         <label>Roles:
             <input type="checkbox" name="roles"
