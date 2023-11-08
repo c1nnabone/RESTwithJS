@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
@@ -16,11 +17,11 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
     private UserService userService;
-    @Autowired
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping
@@ -31,10 +32,8 @@ public class AdminController {
 
     @GetMapping("/new")
     public String newUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        List<Role> roles = (List<Role>) roleRepository.findAll();
-        model.addAttribute("allRoles", roles);
+        model.addAttribute("user", new User());
+        model.addAttribute("allRoles", roleService.getAllRoles());
         return "new";
     }
 
@@ -46,10 +45,8 @@ public class AdminController {
 
     @GetMapping("/edit")
     public String getEditableUser(@RequestParam(value = "id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        List<Role> roles = (List<Role>) roleRepository.findAll();
-        model.addAttribute("allRoles", roles);
         model.addAttribute("usertoupdate", userService.getUserById(id));
+        model.addAttribute("allRoles", roleService.getAllRoles());
         return "edit";
     }
 

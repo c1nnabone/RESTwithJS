@@ -9,6 +9,8 @@
     <tbody>
     <tr>
         <td>Id</td>
+        <td>Name</td>
+        <td>Age</td>
         <td>Username</td>
         <td>Password</td>
         <td>Roles</td>
@@ -17,6 +19,8 @@
     </tr>
     <tr th:each="user : ${users}">
         <td><p th:text="${user.getId()}">user</p></td>
+        <td><p th:text="${user.getName()}">user</p></td>
+        <td><p th:text="${user.getAge()}">user</p></td>
         <td><p th:text="${user.getUsername()}">user</p></td>
         <td><p th:text="${user.getPassword()}">user</p></td>
         <td><p th:text="${user.getRoles()}">user</p></td>
@@ -35,6 +39,7 @@
 <td>
     <button><a th:href="@{/admin/new}">Add New</a></button>
 </td>
+<br>
 <button><a th:href="@{/logout}">Logout</a></button>
 </body>
 </html>

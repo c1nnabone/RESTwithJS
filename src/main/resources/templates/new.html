@@ -7,13 +7,18 @@
 <body>
 <h1>Add User</h1>
 <form th:method="POST" th:action="@{/admin}" th:object="${user}">
-    <label for="name">Enter username:</label>
-    <input type="text" th:field="*{username}" id="name">
+    <label for="username">Enter username:</label>
+    <input type="text" th:field="*{username}" id="username">
     <br>
-    <label for="lastname">Enter password:</label>
-    <input type="text" th:field="*{password}" id="lastname">
+    <label for="password">Enter password:</label>
+    <input type="text" th:field="*{password}" id="password">
     <br>
-    <input type="submit" value="Create!">
+    <label for="name">Enter name:</label>
+    <input type="text" th:field="*{name}" id="name">
+    <br>
+    <label for="age">Enter age:</label>
+    <input type="text" th:field="*{age}" id="age">
+    <br>
     <p>
         <label>Roles:
             <input type="checkbox" name="roles"
@@ -24,7 +29,9 @@
             />
         </label>
     </p>
+    <input type="submit" value="Create!">
 </form>
+<br>
 <button><a th:href="@{/logout}">Logout</a></button>
 </body>
 </html>
