@@ -6,9 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -39,11 +37,13 @@ public class User implements UserDetails {
 
     }
 
-    public User(String username, String password, String name, int age) {
+    public User(Long id, String username, String password, String name, int age, Set<Role> roles) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.age = age;
+        this.roles = roles;
     }
 
     public String getName() {
@@ -111,6 +111,11 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public String getFormattedRoles() {
+        List<Role> formattedRoles = new ArrayList<>(roles);
+        return formattedRoles.toString().replaceAll("\\[|\\]$", "");
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -119,6 +124,16 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public boolean isAdmin() {
+        Set<Role> userRoles = this.getRoles();
+        return userRoles.stream().anyMatch(s -> s.getName().contains("ROLE_ADMIN"));
+    }
+
+
+    public boolean isUser() {
+        Set<Role> userRoles = this.getRoles();
+        return userRoles.stream().anyMatch(s -> s.getName().contains("ROLE_USER"));
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
