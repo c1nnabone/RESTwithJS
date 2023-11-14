@@ -27,23 +27,24 @@ public class User implements UserDetails {
     private int age;
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public User() {
-
     }
 
-    public User(Long id, String username, String password, String name, int age, Set<Role> roles) {
+    public User(Long id, String username, String password, String name, int age) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.age = age;
-        this.roles = roles;
     }
 
     public String getName() {
@@ -124,16 +125,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public boolean isAdmin() {
-        Set<Role> userRoles = this.getRoles();
-        return userRoles.stream().anyMatch(s -> s.getName().contains("ROLE_ADMIN"));
-    }
-
-
-    public boolean isUser() {
-        Set<Role> userRoles = this.getRoles();
-        return userRoles.stream().anyMatch(s -> s.getName().contains("ROLE_USER"));
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

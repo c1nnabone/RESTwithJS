@@ -11,7 +11,6 @@ import ru.kata.spring.boot_security.demo.entity.User;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
     @GetMapping
     public String getUser(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -127,13 +127,12 @@
                                                                 <input th:name="password" type="password" class="form-control" th:value="${user.password}" style="width: 60%; margin: auto">
 
                                                                 <h5 style="padding-top: 15px">Role</h5>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input type="checkbox" id="admin" th:name="roleAdmin" th:checked="${user.isAdmin()}" th:value="1">
-                                                                    <label for="admin">Admin</label><br>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input type="checkbox" id="user" th:name="roleUser" th:checked="${user.isUser()}" th:value="2">
-                                                                    <label for="user">User</label><br>
+                                                                <div class="col-2" style="width: 40%; margin: auto">
+                                                                    <select multiple class="form-control" id="roles" name="roles">
+                                                                        <option th:each="role : ${allRoles}"
+                                                                                th:text="${role.name.replace('ROLE_', '')}"
+                                                                                th:value="${role.id}">
+                                                                    </select>
                                                                 </div>
                                                             </div>
 
@@ -251,13 +250,12 @@
                                 <br/>
 
                                 <h5 style="padding-top: 15px; text-align: center">Role</h5>
-                                <div class="field" style="text-align: center">
-                                        <input type="checkbox" name="roles"
-                                               th:each="role : ${allRoles}"
-                                               th:text="${role.name.replace('ROLE_', '')}"
-                                               th:value="${role.id}"
-                                               th:field="*{roles}"
-                                        />
+                                <div class="col-2" style="width: 40%; margin: auto">
+                                    <select multiple class="form-control" id="newRoles" name="roles">
+                                        <option th:each="role : ${allRoles}"
+                                                th:text="${role.name.replace('ROLE_', '')}"
+                                                th:value="${role.id}">
+                                    </select>
                                 </div>
 
                                 <div style="padding-top: 15px; padding-bottom: 15px; text-align: center"><input
