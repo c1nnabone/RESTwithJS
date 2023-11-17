@@ -13,7 +13,6 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import java.util.List;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
     private UserRepository userRepository;
 
@@ -28,18 +27,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public void addUser(User user) {
         userRepository.save(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 
     @Override
+    @Transactional
     public void updateUser(User updatedUser) {
         updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         userRepository.save(updatedUser);
     }
 
     @Override
+    @Transactional
     public void removeById(Long id) {
         userRepository.deleteById(id);
     }

@@ -32,7 +32,7 @@ public class SpringBootSecurityDemoApplication implements CommandLineRunner {
 
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         Role admin = new Role("ROLE_ADMIN");
         Role user = new Role("ROLE_USER");
         User MrAdmin = new User(Long.valueOf(1), "MrAdmin", "123", "Petr I", 34);
