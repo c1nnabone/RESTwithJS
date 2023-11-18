@@ -105,7 +105,7 @@
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
 
-                                                        <form method="post" th:action="@{/admin/edit}" th:object="${user}">
+                                                        <form th:method="patch" th:action="@{/admin/edit}" th:object="${user}">
                                                             <div class="modal-body text-center">
                                                                 <h5>ID</h5>
                                                                 <input type="hidden" th:value="${user.id}" name="id">
