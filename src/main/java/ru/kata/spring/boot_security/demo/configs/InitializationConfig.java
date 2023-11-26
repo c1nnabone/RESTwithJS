@@ -30,16 +30,14 @@ public class InitializationConfig {
     public void Initialization() {
         Role admin = new Role("ROLE_ADMIN");
         Role user = new Role("ROLE_USER");
-        User MrAdmin = new User(Long.valueOf(1), "MrAdmin", "123", "Petr I", 34);
-        User MrUser = new User(Long.valueOf(2), "MrUser", "123", "Nikolay II", 54);
-        MrAdmin.setPassword(passwordEncoder.encode(MrAdmin.getPassword()));
-        MrUser.setPassword(passwordEncoder.encode(MrUser.getPassword()));
-        MrAdmin.setRoles(new HashSet<>() {{
+        User MrAdmin = new User(Long.valueOf(1), "MrAdmin", "123", "Petr I", 34, new HashSet<>() {{
             add(admin);
         }});
-        MrUser.setRoles(new HashSet<>() {{
+        User MrUser = new User(Long.valueOf(2), "MrUser", "123", "Nikolay II", 54, new HashSet<>() {{
             add(user);
         }});
+        MrAdmin.setPassword(passwordEncoder.encode(MrAdmin.getPassword()));
+        MrUser.setPassword(passwordEncoder.encode(MrUser.getPassword()));
         userRepository.save(MrAdmin);
         userRepository.save(MrUser);
     }

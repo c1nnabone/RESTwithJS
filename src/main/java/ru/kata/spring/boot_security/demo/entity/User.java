@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.entity;
 
 
+import com.fasterxml.jackson.annotation.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,13 +20,11 @@ public class User implements UserDetails {
     private String username;
     @Column(name = "password")
     private String password;
-
     @Column(name = "name")
     private String name;
     @Column(name = "age")
     @NotNull
     private int age;
-
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
@@ -34,17 +33,19 @@ public class User implements UserDetails {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonIgnoreProperties("users")
     private Set<Role> roles;
 
     public User() {
     }
 
-    public User(Long id, String username, String password, String name, int age) {
+    public User(Long id, String username, String password, String name, int age, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.age = age;
+        this.roles = roles;
     }
 
     public String getName() {
