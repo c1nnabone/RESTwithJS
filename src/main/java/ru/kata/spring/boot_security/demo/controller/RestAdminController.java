@@ -27,6 +27,8 @@ public class RestAdminController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    //Роли передаются вместе с юзером здесь
+    // Выглядит это примерно так: {"id":2,"username":"MrUser","password":"$2a$10$aHj2SfmEjfpor2CDWEdIH.aXthzjr0y1KBpK/o8w7xKWI80lhBY5.","name":"Nikolay II","age":54,"roles":[{"id":2,"name":"ROLE_USER","authority":"ROLE_USER"}]
     @GetMapping("users/{id}")
     public User getUser(@PathVariable Long id) {
         return userService.findById(id);
