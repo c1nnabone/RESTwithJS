@@ -15,11 +15,10 @@ const renderUsers = (users) => {
             temp += `
                 <tr>
                     <td> ${user.id} </td>
+                    <td> ${user.username} </td>
                     <td> ${user.name} </td>
-                    <td> ${user.lastName} </td>
                     <td> ${user.age} </td>
-                    <td> ${user.email} </td>
-                    <td> ${user.roles.map((role) => role.name === "ROLE_USER" ? " Юзер" : " Админ")} </td>
+                    <td> ${user.roles.map((role) => role.name === "ROLE_USER" ? " User" : " Admin")} </td>
                     <td> <button type="button" class="btn btn-info" id="btn-edit-modal-call" data-toggle="modal" data-target="modal-edit"
                     data-id="${user.id}">Изменить</button></td>
                     <td> <button type="button" class="btn btn-danger" id="btn-delete-modal-call" 
@@ -53,10 +52,9 @@ getAllUsers();
 //Форма добавления юзера
 const addUserForm         = document.querySelector(".add-user-form");
 // Поля формы добавления нового юзера
-const addUserFormName     = document.getElementById("add-user-form-name");
-const addUserFormLastName = document.getElementById("add-user-form-last-name");
+const addUserFormUsername     = document.getElementById("add-user-form-username");
+const addUserFormName = document.getElementById("add-user-form-name");
 const addUserFormAge      = document.getElementById("add-user-form-age");
-const addUserFormEmail    = document.getElementById("add-user-form-email");
 const addUserFormPassword = document.getElementById("add-user-form-password");
 const addUserFormRoles    = document.getElementById("add-user-form-roles");
 //Кнопка submit формы нового юзера
@@ -70,14 +68,14 @@ function getRolesFromAddUserForm() {
     if (roles.includes("1")) {
         let role1 = {
             id: 1,
-            name: "Админ"
+            name: "Admin"
         }
         rolesToAdd.push(role1);
     }
     if (roles.includes("2")) {
         let role2 = {
             id: 2,
-            name: "Юзер"
+            name: "User"
         }
         rolesToAdd.push(role2);
     }
@@ -92,10 +90,9 @@ addUserForm.addEventListener("submit", (e) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+            username: addUserFormUsername.value,
             name: addUserFormName.value,
-            lastName: addUserFormLastName.value,
             age: addUserFormAge.value,
-            email: addUserFormEmail.value,
             password: addUserFormPassword.value,
             roles: getRolesFromAddUserForm()
         })
@@ -133,10 +130,9 @@ let getDataOfCurrentUser = (id) => {
         .then(dataUser => {
             let user = {
                 id: dataUser.id,
+                username: dataUser.username,
                 name: dataUser.name,
-                lastName: dataUser.lastName,
                 age: dataUser.age,
-                email: dataUser.email,
                 password: dataUser.password,
                 roles: dataUser.roles
             }
@@ -151,14 +147,14 @@ function getRolesFromEditUserForm() {
     if (roles.includes("1")) {
         let role1 = {
             id: 1,
-            name: "Админ"
+            name: "Admin"
         }
         rolesToEdit.push(role1);
     }
     if (roles.includes("2")) {
         let role2 = {
             id: 2,
-            name: "Юзер"
+            name: "User"
         }
         rolesToEdit.push(role2);
     }
@@ -174,10 +170,9 @@ allUsersTable.addEventListener("click", e => {
 //Удаление юзеров
 
     const deleteUsersId       = document.getElementById("delete-id")
-    const deleteUsersName     = document.getElementById("delete-name")
-    const deleteUsersLastName = document.getElementById("delete-lastName")
+    const deleteUsersUsername     = document.getElementById("delete-username")
+    const deleteUsersName = document.getElementById("delete-name")
     const deleteUsersAge      = document.getElementById("delete-age")
-    const deleteUsersEmail    = document.getElementById("delete-email")
 
     if (delButtonIsPressed) {
         let currentUserId = e.target.dataset.id;
@@ -190,10 +185,9 @@ allUsersTable.addEventListener("click", e => {
             .then(res => res.json())
             .then(user => {
                 deleteUsersId.value       = user.id;
-                deleteUsersName.value     = user.name;
-                deleteUsersLastName.value = user.lastName;
+                deleteUsersUsername.value     = user.username;
+                deleteUsersName.value = user.name;
                 deleteUsersAge.value      = user.age;
-                deleteUsersEmail.value    = user.email;
 
                 let deleteRoles = user.roles.map(i => i.roleName)
                 deleteRoles.forEach(
@@ -223,10 +217,9 @@ allUsersTable.addEventListener("click", e => {
 //Изменение юзеров
 
     const editUsersId       = document.getElementById("edit-id");
-    const editUsersName     = document.getElementById("edit-name");
-    const editUsersLastName = document.getElementById("edit-lastName");
+    const editUsersUsername     = document.getElementById("edit-username");
+    const editUsersName = document.getElementById("edit-name");
     const editUsersAge      = document.getElementById("edit-age");
-    const editUsersEmail    = document.getElementById("edit-email");
 
     if (editButtonIsPressed) {
         let currentUserId = e.target.dataset.id;
@@ -240,10 +233,9 @@ allUsersTable.addEventListener("click", e => {
             .then(user => {
 
                 editUsersId.value       = user.id;
-                editUsersName.value     = user.name;
-                editUsersLastName.value = user.lastName;
+                editUsersUsername.value     = user.username;
+                editUsersName.value = user.name;
                 editUsersAge.value      = user.age;
-                editUsersEmail.value    = user.email;
 
                 let editRoles = user.roles.map(i => i.roleName)
                 editRoles.forEach(
@@ -262,10 +254,9 @@ allUsersTable.addEventListener("click", e => {
             e.preventDefault();
             let user = {
                 id: editUsersId.value,
+                username: editUsersUsername.value,
                 name: editUsersName.value,
-                lastName: editUsersLastName.value,
                 age: editUsersAge.value,
-                email: editUsersEmail.value,
                 roles: getRolesFromEditUserForm()
             }
             fetch(`${requestURL}/${currentUserId}`, {

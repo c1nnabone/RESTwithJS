@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entity.User;
-import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
@@ -16,12 +15,10 @@ import java.util.NoSuchElementException;
 public class RestAdminController {
 
     private final UserService userService;
-    private final RoleService roleService;
 
     @Autowired
-    public RestAdminController(UserService userService, RoleService roleService) {
+    public RestAdminController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @GetMapping("/users")
@@ -29,6 +26,7 @@ public class RestAdminController {
         List<User> users = userService.getUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+
     @GetMapping("users/{id}")
     public User getUser(@PathVariable Long id) {
         return userService.findById(id);
@@ -44,8 +42,8 @@ public class RestAdminController {
         }
     }
 
-    @PutMapping("/edit")
-    public ResponseEntity<?> editUser(@RequestBody User user) {
+    @PutMapping("/users/{id}")
+    public ResponseEntity<?> editUser(@RequestBody User user, @PathVariable Long id) {
         try {
             userService.updateUser(user);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -54,8 +52,8 @@ public class RestAdminController {
         }
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteUser(@RequestParam Long id) {
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {
             userService.removeById(id);
             return new ResponseEntity<>(HttpStatus.OK);
