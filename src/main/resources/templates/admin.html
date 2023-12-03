@@ -82,7 +82,7 @@
 
                                             <!--модальное окно Edit-->
                                             <div class="modal fade" tabindex="-1" role="dialog" id="modal-edit">
-                                                <form>
+                                                <form class="edit-user-form">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
 
@@ -99,6 +99,7 @@
                                                             <!--Тело-->
                                                             <div class="modal-body">
                                                                 <div class="container-fluid" align="center">
+
 
                                                                     <div class="form-group col-7" align="center">
                                                                         <label class="col-form-label"
@@ -127,22 +128,29 @@
                                                                         <input class="form-control" type="text"
                                                                                id="edit-age"/>
                                                                     </div>
-
                                                                     <div class="form-group col-7">
-                                                                        <label class="col-form-label"
-                                                                               for="edit-rolesSelect">Role</label>
-                                                                        <select id="edit-rolesSelect"
-                                                                                class="form-control" size="2" multiple
-                                                                                name="roles" required="required">
-                                                                            <option id="edit-role_admin"
-                                                                                    name="role_admin" value="1">
-                                                                                Admin
-                                                                            </option>
-                                                                            <option id="edit-role_user" value="2">
-                                                                                User
-                                                                            </option>
+                                                                    <label class="container-fluid col-6" for="rolesEditUser"><strong>Role</strong>
+                                                                        <select class="form-control" id="rolesEditUser" name="roles" multiple size="2">
+
                                                                         </select>
+                                                                    </label>
                                                                     </div>
+
+<!--                                                                    <div class="form-group col-7">-->
+<!--                                                                        <label class="col-form-label"-->
+<!--                                                                               for="edit-rolesSelect">Role</label>-->
+<!--                                                                        <select id="edit-rolesSelect"-->
+<!--                                                                                class="form-control" size="2" multiple-->
+<!--                                                                                name="roles" required="required">-->
+<!--                                                                            <option id="edit-role_admin"-->
+<!--                                                                                    name="role_admin" value="1">-->
+<!--                                                                                Admin-->
+<!--                                                                            </option>-->
+<!--                                                                            <option id="edit-role_user" value="2">-->
+<!--                                                                                User-->
+<!--                                                                            </option>-->
+<!--                                                                        </select>-->
+<!--                                                                    </div>-->
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -211,10 +219,10 @@
                                                                                     size="2"
                                                                                     multiple name="roles" disabled>
                                                                                 <option id="delete-role_admin" value="1">
-                                                                                    Администратор
+                                                                                    Admin
                                                                                 </option>
                                                                                 <option id="delete-role_user" value="2">
-                                                                                    Пользователь
+                                                                                    User
                                                                                 </option>
                                                                             </select>
                                                                         </div>
@@ -265,12 +273,13 @@
                                                 <input class="form-control" id="add-user-form-password">
                                             </div>
                                             <div class="form-group col-6" align="center">
-                                                <label for="add-user-form-roles">Роль</label>
-                                                <select class="form-control" name="roles" multiple required="required"
-                                                        size="2" id="add-user-form-roles">
-                                                    <option value="1">Admin</option>
-                                                    <option value="2">User</option>
-                                                </select>
+                                                <label class="container-fluid"
+                                                       for="newUserRoles"><strong>Role</strong>
+                                                    <select id="newUserRoles" class="form-control" name="roles"
+                                                            multiple size="2">
+
+                                                    </select>
+                                                </label>
                                             </div>
                                             <button type="submit" class="btn btn-success" id="add-btn-submit">
                                                 Add new user
@@ -312,6 +321,7 @@
 </div>
 
 <script src="admin.js"></script>
+<script src="adduser.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

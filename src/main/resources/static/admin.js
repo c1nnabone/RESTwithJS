@@ -56,52 +56,54 @@ const addUserFormUsername     = document.getElementById("add-user-form-username"
 const addUserFormName = document.getElementById("add-user-form-name");
 const addUserFormAge      = document.getElementById("add-user-form-age");
 const addUserFormPassword = document.getElementById("add-user-form-password");
-const addUserFormRoles    = document.getElementById("add-user-form-roles");
+
 //Кнопка submit формы нового юзера
 const addButtonSubmit     = document.getElementById("add-btn-submit");
 
-//Генерация ролей
-function getRolesFromAddUserForm() {
-    let roles = Array.from(addUserFormRoles.selectedOptions)
-        .map(option => option.value);
-    let rolesToAdd = [];
-    if (roles.includes("1")) {
-        let role1 = {
-            id: 1,
-            name: "Admin"
-        }
-        rolesToAdd.push(role1);
-    }
-    if (roles.includes("2")) {
-        let role2 = {
-            id: 2,
-            name: "User"
-        }
-        rolesToAdd.push(role2);
-    }
-    return rolesToAdd;
-}
 
-addUserForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    fetch(requestURL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: addUserFormUsername.value,
-            name: addUserFormName.value,
-            age: addUserFormAge.value,
-            password: addUserFormPassword.value,
-            roles: getRolesFromAddUserForm()
+//Генерация ролей
+function newUser() {
+     fetch("http://localhost:8080/api/users/roles")
+        .then(res => res.json())
+        .then(roles => {
+            roles.forEach(role => {
+                let el = document.createElement("option");
+                el.text = role.name.substring(5);
+                el.value = role.id;
+                $('#newUserRoles')[0].appendChild(el);
+            })
         })
+    addUserForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let newUserRoles = [];
+        for (let i = 0; i < addUserForm.roles.options.length; i++) {
+            if (addUserForm.roles.options[i].selected) newUserRoles.push({
+                id: addUserForm.roles.options[i].value,
+                name: addUserForm.roles.options[i].name
+            })
+        }
+        fetch(requestURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: addUserFormUsername.value,
+                name: addUserFormName.value,
+                age: addUserFormAge.value,
+                password: addUserFormPassword.value,
+                roles: newUserRoles
+            })
+        })
+            .then(() => {
+                addUserForm.reset();
+                usersTableNavLink.click();
+                location.reload();
+            });
     })
-        .then(() => {
-            usersTableNavLink.click();
-            location.reload();
-        });
-})
+}
+newUser();
+
 
 //Удаление и изменение юзеров
 
@@ -111,6 +113,7 @@ const modalEditSubmitBtn    = document.getElementById("submit_btn-modal-edit");
 const editUsersRoles        = document.getElementById("edit-rolesSelect");
 const editRoleAdminOption   = document.getElementById("edit-role_admin");
 const editRoleUserOption    = document.getElementById("edit-role_user");
+const editUserForm         = document.querySelector(".edit-user-form");
 
 const deleteRoleAdminOption = document.getElementById("delete-role_admin");
 const deleteRoleUserOption  = document.getElementById("delete-role_user");
@@ -140,26 +143,7 @@ let getDataOfCurrentUser = (id) => {
         })
 }
 
-function getRolesFromEditUserForm() {
-    let roles = Array.from(editUsersRoles.selectedOptions)
-        .map(option => option.value);
-    let rolesToEdit = [];
-    if (roles.includes("1")) {
-        let role1 = {
-            id: 1,
-            name: "Admin"
-        }
-        rolesToEdit.push(role1);
-    }
-    if (roles.includes("2")) {
-        let role2 = {
-            id: 2,
-            name: "User"
-        }
-        rolesToEdit.push(role2);
-    }
-    return rolesToEdit;
-}
+
 
 //Отслеживание нажатий по кнопкам Edit и Delete в таблице юзеров
 allUsersTable.addEventListener("click", e => {
@@ -222,6 +206,16 @@ allUsersTable.addEventListener("click", e => {
     const editUsersAge      = document.getElementById("edit-age");
 
     if (editButtonIsPressed) {
+        fetch("http://localhost:8080/api/users/roles")
+            .then(res => res.json())
+            .then(roles => {
+                roles.forEach(role => {
+                    let el = document.createElement("option");
+                    el.text = role.name.substring(5);
+                    el.value = role.id;
+                    $('#rolesEditUser')[0].appendChild(el);
+                })
+            })
         let currentUserId = e.target.dataset.id;
         fetch(requestURL + "/" + currentUserId, {
             headers: {
@@ -237,27 +231,34 @@ allUsersTable.addEventListener("click", e => {
                 editUsersName.value = user.name;
                 editUsersAge.value      = user.age;
 
-                let editRoles = user.roles.map(i => i.roleName)
-                editRoles.forEach(
-                    role => {
-                        if (role === "ROLE_ADMIN") {
-                            editRoleAdminOption.setAttribute('selected', "selected");
-
-                        } else if (role === "ROLE_USER") {
-                            editRoleUserOption.setAttribute('selected', "selected");
-                        }
-                    })
+                // let editRoles = user.roles.map(i => i.roleName)
+                // editRoles.forEach(
+                //     role => {
+                //         if (role === "ROLE_ADMIN") {
+                //             editRoleAdminOption.setAttribute('selected', "selected");
+                //
+                //         } else if (role === "ROLE_USER") {
+                //             editRoleUserOption.setAttribute('selected', "selected");
+                //         }
+                //     })
             })
         $('#modal-edit').modal('show');
 
         modalEditSubmitBtn.addEventListener("click", e => {
             e.preventDefault();
+            let editUserRoles = [];
+            for (let i = 0; i < editUserForm.roles.options.length; i++) {
+                if (editUserForm.roles.options[i].selected) editUserRoles.push({
+                    id : editUserForm.roles.options[i].value,
+                    name : editUserForm.roles.options[i].text
+                })
+            }
             let user = {
                 id: editUsersId.value,
                 username: editUsersUsername.value,
                 name: editUsersName.value,
                 age: editUsersAge.value,
-                roles: getRolesFromEditUserForm()
+                roles: editUserRoles
             }
             fetch(`${requestURL}/${currentUserId}`, {
                 method: 'PUT',

@@ -4,21 +4,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
 public class RestAdminController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public RestAdminController(UserService userService) {
+    public RestAdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/users")
@@ -26,9 +31,10 @@ public class RestAdminController {
         List<User> users = userService.getUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-
-    //Роли передаются вместе с юзером здесь
-    // Выглядит это примерно так: {"id":2,"username":"MrUser","password":"$2a$10$aHj2SfmEjfpor2CDWEdIH.aXthzjr0y1KBpK/o8w7xKWI80lhBY5.","name":"Nikolay II","age":54,"roles":[{"id":2,"name":"ROLE_USER","authority":"ROLE_USER"}]
+    @GetMapping("/users/roles")
+    public ResponseEntity<List<Role>> getAllRoles() {
+        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
+    }
     @GetMapping("users/{id}")
     public User getUser(@PathVariable Long id) {
         return userService.findById(id);
